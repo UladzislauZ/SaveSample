@@ -36,7 +36,6 @@ public class Generator : MonoBehaviour
 
     private void DestroyStone()
     {
-        Debug.Log("destroyObject");
         message.text = "";
         _currentCountStones--;
     }
