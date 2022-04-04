@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -34,11 +35,11 @@ public class GameController : MonoBehaviour
         shop.SetActive(true);
     }
 
-    private void OnApplicationQuit()
-    {
-        var transformPlayer = player.gameObject.transform;
-        SaveData.SaveGame(new Save(player.model.Level(),player.model.Score(),player.model.LevelAxe(), transformPlayer.position, transformPlayer.rotation, GetStonesOnScene()));
-    }
+    // private void OnApplicationQuit()
+    // {
+    //     var transformPlayer = player.gameObject.transform;
+    //     SaveData.SaveGame(new Save(player.model.Level(),player.model.Score(),player.model.LevelAxe(), transformPlayer.position, transformPlayer.rotation, GetStonesOnScene()));
+    // }
 
     private List<Vector3> GetStonesOnScene()
     {
@@ -49,5 +50,16 @@ public class GameController : MonoBehaviour
         }
 
         return stones;
+    }
+    
+
+    public void ExitScene()
+    {
+        EventBus.Generate -= LoadEvent;
+        EventBus.NewGame -= NewGameEvent;
+        EventBus.LoadLastGame -= LastGameEvent;
+        var transformPlayer = player.gameObject.transform;
+        SaveData.SaveGame(new Save(player.model.Level(),player.model.Score(),player.model.LevelAxe(), transformPlayer.position, transformPlayer.rotation, GetStonesOnScene()));
+        SceneManager.LoadScene(0);
     }
 }
